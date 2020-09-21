@@ -16,10 +16,13 @@ def read_arguments():
     parser.add_argument("--video", type=str, help="video path to perform inference on", dest='video')
     parser.add_argument("--camera", type=str, help="if your input comes from a videocamera, put the camera number ("
                                                    "usually 0)", dest='camera')
-    parser.add_argument("--dim", type=tuple, default=(320, 320), help='dimension of the net a.k.a. dimension of the '
-                                                                      'input image. It must be in the form of (x,'
-                                                                      'y) where x or y can be defined as: x = 320 + 96 '
-                                                                      '* n in {0, 1, 2, ...} ', dest='dim')
+    parser.add_argument("--dim", type=int, nargs='+', default=(320, 320), help='dimension of the net a.k.a. dimension '
+                                                                               'of the '
+                                                                               'input image. It must be in the form of '
+                                                                               '(x, '
+                                                                               'y) where x or y can be defined as: x = '
+                                                                               '320 + 96 '
+                                                                               '* n in {0, 1, 2, ...} ', dest='dim')
     return parser.parse_args()
 
 
@@ -39,19 +42,19 @@ if not args.dim:
 
 weights_path = args.weights
 names_path = args.names
-dim = args.dim
+dim = tuple(args.dim)
 
-detector = YOLOv4(weights_path, names_path, (320, 320))
-imageIterator = ImageIterator(cv2.VideoCapture(input_video), resize=(720, 720))
+detector = YOLOv4(weights_path, names_path, dim)
+imageIterator = ImageIterator(cv2.VideoCapture(input_video), resize=(980, 720))
 
 for image in imageIterator:
     start = time.time()
     bboxes = detector.detect(image, ['person'])
 
-    count_image = detector.draw_boxes(image, bboxes)
+    fps = 1. / (time.time() - start)
+    count_image = detector.draw_boxes(image, bboxes, fps)
 
     cv2.waitKey(1)
     cv2.imshow('COVID-monitor', count_image)
 
-    fps = 1. / (time.time() - start)
     print('\rframerate: %f fps' % fps, end='')

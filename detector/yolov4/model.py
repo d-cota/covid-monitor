@@ -887,11 +887,12 @@ class YOLOv4(Detector):
 
         return bboxes_batch
 
-    def draw_boxes(self, image, bboxes, draw_rectangles=True):
+    def draw_boxes(self, image, bboxes, fps=None, draw_rectangles=True):
         people_count = len(bboxes)
 
         font = cv2.FONT_HERSHEY_SIMPLEX
-        bottomLeftCornerOfText = (10, 500)
+        bottomLeftCornerOfText = (10, int(image.shape[0] * 0.98))  # width, height
+        topRightCorner = (int(image.shape[1] * 0.73), 30)
         fontScale = 1
         fontColor = (255, 255, 255)
         lineType = 2
@@ -902,6 +903,14 @@ class YOLOv4(Detector):
                             fontScale,
                             fontColor,
                             lineType)
+
+        if fps is not None:
+            image = cv2.putText(image, 'FPS: {:.2f}'.format(fps),
+                                topRightCorner,
+                                font,
+                                fontScale,
+                                fontColor,
+                                lineType)
 
         if draw_rectangles:
             for bbox in bboxes:
