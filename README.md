@@ -56,6 +56,6 @@ The system relies on a object detector to perform the people counting task. To s
 ```
 *Usage example*
 ```
-$ python monitor.py --weights ./weights/yolov4.pth --names ./config/coco.names --video ./inputs/demo.mp4 --dim (320, 320)
+$ python monitor.py --weights ./weights/yolov4.pth --names ./config/coco.names --video ./inputs/demo.mp4 --dim 320 320
 ```
 You can download YOLOv4 weights from [here](https://drive.google.com/open?id=1wv_LiFeCRYwtpkqREPeI13-gPELBDwuJ) and put them in the weights directory.
