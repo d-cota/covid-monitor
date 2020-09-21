@@ -7,3 +7,6 @@
 *.iml
 out
 gen
+
+/inputs/
+/weights/yolov4.pth
