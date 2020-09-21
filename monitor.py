@@ -45,7 +45,7 @@ names_path = args.names
 dim = tuple(args.dim)
 
 detector = YOLOv4(weights_path, names_path, dim)
-imageIterator = ImageIterator(cv2.VideoCapture(input_video), resize=(980, 720))
+imageIterator = ImageIterator(cv2.VideoCapture(input_video), resize=(720, 720))
 
 for image in imageIterator:
     start = time.time()

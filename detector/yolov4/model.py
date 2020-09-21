@@ -892,7 +892,7 @@ class YOLOv4(Detector):
 
         font = cv2.FONT_HERSHEY_SIMPLEX
         bottomLeftCornerOfText = (10, int(image.shape[0] * 0.98))  # width, height
-        topRightCorner = (int(image.shape[1] * 0.73), 30)
+        topRightCorner = (int(image.shape[1] * 0.72), 30)
         fontScale = 1
         fontColor = (255, 255, 255)
         lineType = 2
