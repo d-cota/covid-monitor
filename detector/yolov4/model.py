@@ -879,41 +879,10 @@ class YOLOv4(Detector):
 
                     for k in range(ll_box_array.shape[0]):
                         bboxes.append(
-                            [ll_box_array[k, 0] * width, ll_box_array[k, 1] * height, ll_box_array[k, 2] * width,
-                             ll_box_array[k, 3] * height,
+                            [int(ll_box_array[k, 0] * width), int(ll_box_array[k, 1] * height), int(ll_box_array[k, 2] * width),
+                             int(ll_box_array[k, 3] * height),
                              ll_max_conf[k], self.class_names[ll_max_id[k]]])  # x1, y1, x2, y2
 
             bboxes_batch.extend(bboxes)
 
         return bboxes_batch
-
-    def draw_boxes(self, image, bboxes, fps=None, draw_rectangles=True):
-        people_count = len(bboxes)
-
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        bottomLeftCornerOfText = (10, int(image.shape[0] * 0.98))  # width, height
-        topRightCorner = (int(image.shape[1] * 0.72), 30)
-        fontScale = 1
-        fontColor = (255, 255, 255)
-        lineType = 2
-
-        image = cv2.putText(image, 'People count: {}'.format(people_count),
-                            bottomLeftCornerOfText,
-                            font,
-                            fontScale,
-                            fontColor,
-                            lineType)
-
-        if fps is not None:
-            image = cv2.putText(image, 'FPS: {:.2f}'.format(fps),
-                                topRightCorner,
-                                font,
-                                fontScale,
-                                fontColor,
-                                lineType)
-
-        if draw_rectangles:
-            for bbox in bboxes:
-                image = cv2.rectangle(image, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 255, 0), 1)
-
-        return image

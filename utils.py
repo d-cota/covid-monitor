@@ -5,6 +5,7 @@ class ImageIterator(object):
     """
     Iterator class used to iterate over video frames
     """
+
     def __init__(self, frameGetter, frameRate=1, max_frames=None, skip_sec=0, resize=None):
         """
 
@@ -36,3 +37,21 @@ class ImageIterator(object):
                 return image
             else:
                 return cv2.resize(image, self.resize)
+
+
+def convertCoord(x1, y1, x2, y2):
+    """
+    Transforms rectangular coordinates into center coordinates
+    :param x1: x min
+    :param y1: y min
+    :param x2: x max
+    :param y2: y max
+    :return (list): rectangle center coordinates [x, y, w, h]
+                    with x center, y center, width, height
+    """
+    x = int((x1 + x2) / 2)
+    y = int((y1 + y2) / 2)
+    w = int(x2 - x1)
+    h = int(y2 - y1)
+
+    return [x, y, w, h]
