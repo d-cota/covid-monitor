@@ -19,10 +19,10 @@ args = read_arguments()
 dim = tuple(args.dim)
 resize = tuple(args.resize)
 
-if args.video is not None:
-    src = args.video
+if len(args.video) < 3:  # if the source is the camera
+    src = int(args.video)
 else:
-    src = str(args.camera)
+    src = args.video
 
 detector = YOLOv4(args.det_weights, args.names, dim)
 
