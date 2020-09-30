@@ -12,8 +12,9 @@ from .main.model import get_pose_net
 from .common.utils.pose_utils import process_bbox, pixel2cam
 from .data.dataset import generate_patch_image
 
-from utils import convertCoord
+from utils import convertToXYWH, fontColor, fontScale, font, lineType
 from itertools import combinations
+from collections import deque
 
 
 class RootNet(object):
@@ -38,7 +39,7 @@ class RootNet(object):
         self.transform = transforms.Compose(
             [transforms.ToTensor(), transforms.Normalize(mean=cfg.pixel_mean, std=cfg.pixel_std)])
 
-    def estimate(self, bboxes, image):
+    def estimate(self, bboxes, image, tracking=False):
         """
 
         :param bboxes:
@@ -50,7 +51,7 @@ class RootNet(object):
 
         output = []
         for bbox in bboxes:
-            bbox_xywh = convertCoord(bbox[0], bbox[1], bbox[2], bbox[3])
+            bbox_xywh = convertToXYWH(bbox[0], bbox[1], bbox[2], bbox[3])
             bbox_root = process_bbox(bbox_xywh, image.shape[1], image.shape[0])
             img, img2bb_trans = generate_patch_image(image, bbox_root, False, 0.0)
             img = self.transform(img).cuda()[None, :, :, :]
@@ -71,14 +72,19 @@ class RootNet(object):
             root_3d[:2] = np.dot(np.linalg.inv(img2bb_trans_001), root_3d_xy1)[:2]
             # get 3D coordinates for bbox
             root_3d = pixel2cam(root_3d[None, :], self.focal, self.principal_points)
-            output.append([bbox, root_3d])
+            if tracking:
+                pid = bbox[-1]
+                output.append([bbox, root_3d, pid])
+            else:
+                output.append([bbox, root_3d])
 
         return output
 
 
-def check_distance(image, outputs, start, threshold=2):
+def check_distance(image, outputs, threshold=2, last_frames=3, tracking=False):
     """
 
+    :param last_frames:
     :param threshold:
     :param start:
     :param image:
@@ -90,8 +96,22 @@ def check_distance(image, outputs, start, threshold=2):
     for out in outputs:
         bbox = out[0]
         coord = out[1]
-        centroid_dict[objectId] = (coord[0][0], coord[0][1], coord[0][2], bbox[0], bbox[1], bbox[2], bbox[3])
-        objectId += 1
+        if tracking:  # if we're using tracking
+            pid = out[-1]
+            if pid not in check_distance.coordinates:
+                check_distance.coordinates[pid] = deque(maxlen=last_frames)
+            check_distance.coordinates[pid].append(coord)
+            if len(check_distance.coordinates[pid]) >= last_frames:  # if the buffer is full
+                c = np.array(check_distance.coordinates[pid])
+                mean_coord = np.mean(c, axis=0)  # compute the mean of the last n frames
+                centroid_dict[objectId] = (
+                mean_coord[0][0], mean_coord[0][1], mean_coord[0][2], bbox[0], bbox[1], bbox[2], bbox[3])
+                objectId += 1
+            else:
+                continue
+        else:  # if we're not using tracking, just take the raw coordinates
+            centroid_dict[objectId] = (coord[0][0], coord[0][1], coord[0][2], bbox[0], bbox[1], bbox[2], bbox[3])
+            objectId += 1
 
     red_zone_list = []  # List containing which Object id is in under threshold distance condition.
     for (id1, p1), (id2, p2) in combinations(centroid_dict.items(), 2):
@@ -105,16 +125,10 @@ def check_distance(image, outputs, start, threshold=2):
 
     for idx, box in centroid_dict.items():  # dict (1(key):red(value), 2 blue)  idx - key  box - value
         if idx in red_zone_list:  # if id is in red zone list
-            cv2.rectangle(image, (box[3], box[4]), (box[5], box[6]), (0, 0, 255), 2)  # Create Red bounding boxes
+            cv2.rectangle(image, (box[3], box[4]), (box[5], box[6]), (0, 0, 255), 1)  # Create Red bounding boxes
 
     text = "People at Risk: %s" % str(len(red_zone_list))  # Count People at Risk
-    font = cv2.FONT_HERSHEY_SIMPLEX
     bottomLeftCornerOfText = (10, int(image.shape[0] * 0.92))  # width, height
-    topRightCorner = (int(image.shape[1] * 0.72), 30)
-    fontScale = 1
-    fontColor = (255, 255, 255)
-    lineType = 2
-
     image = cv2.putText(image, text,
                         bottomLeftCornerOfText,
                         font,
@@ -122,13 +136,7 @@ def check_distance(image, outputs, start, threshold=2):
                         fontColor,
                         lineType)
 
-    if start is not None:
-        fps = 1. / (time.time() - start)
-        image = cv2.putText(image, 'FPS: {:.2f}'.format(fps),
-                            topRightCorner,
-                            font,
-                            fontScale,
-                            fontColor,
-                            lineType)
-
     return image
+
+
+check_distance.coordinates = {}

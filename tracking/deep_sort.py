@@ -9,7 +9,7 @@ from .sort.preprocessing import non_max_suppression
 from .sort.detection import Detection
 from .sort.tracker import Tracker
 
-from utils import convertCoord
+from utils import convertToXYWH, fontColor, fontScale, font, lineType
 
 
 class DeepSort(object):
@@ -25,7 +25,13 @@ class DeepSort(object):
         self.tracker = Tracker(metric)
 
     def update(self, bbox_xyxy, ori_img):
-        bbox_xywh = [convertCoord(bbox[0], bbox[1], bbox[2], bbox[3]) for bbox in bbox_xyxy]
+        """
+
+        :param bbox_xyxy:
+        :param ori_img:
+        :return:
+        """
+        bbox_xywh = [convertToXYWH(bbox[0], bbox[1], bbox[2], bbox[3]) for bbox in bbox_xyxy]
         confidences = [c[-2] for c in bbox_xyxy]
         self.height, self.width = ori_img.shape[:2]
 
@@ -83,15 +89,9 @@ class DeepSort(object):
             features = np.array([])
         return features
 
-    def draw_boxes(self, image, bboxes, start=None, draw_rectangles=True):
+    def draw_boxes(self, image, bboxes, draw_rectangles=True):
         people_count = len(bboxes)
-
-        font = cv2.FONT_HERSHEY_SIMPLEX
         bottomLeftCornerOfText = (10, int(image.shape[0] * 0.98))  # width, height
-        topRightCorner = (int(image.shape[1] * 0.72), 30)
-        fontScale = 1
-        fontColor = (255, 255, 255)
-        lineType = 2
 
         image = cv2.putText(image, 'People count: {}'.format(people_count),
                             bottomLeftCornerOfText,
@@ -99,15 +99,6 @@ class DeepSort(object):
                             fontScale,
                             fontColor,
                             lineType)
-
-        if start is not None:
-            fps = 1. / (time.time() - start)
-            image = cv2.putText(image, 'FPS: {:.2f}'.format(fps),
-                                topRightCorner,
-                                font,
-                                fontScale,
-                                fontColor,
-                                lineType)
 
         if draw_rectangles:
             for bbox in bboxes:

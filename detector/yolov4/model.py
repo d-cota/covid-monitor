@@ -811,7 +811,6 @@ class YOLOv4(Detector):
             self.net.cpu()
 
     def detect(self, image, targets=None):
-
         width = image.shape[1]
         height = image.shape[0]
 

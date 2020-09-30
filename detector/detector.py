@@ -1,7 +1,7 @@
-import time
 import cv2
 
 from abc import ABC, abstractmethod
+from utils import fontColor, fontScale, font, lineType
 
 
 class Detector(ABC):
@@ -16,23 +16,17 @@ class Detector(ABC):
         pass
 
 
-def count_people(image, bboxes, start=None, draw_rectangles=True):
+def count_people(image, bboxes, draw_rectangles=False):
     """
 
     :param image:
     :param bboxes:
-    :param start:
     :param draw_rectangles:
     :return:
     """
-    people_count = len(bboxes)
 
-    font = cv2.FONT_HERSHEY_SIMPLEX
+    people_count = len(bboxes)
     bottomLeftCornerOfText = (10, int(image.shape[0] * 0.98))  # width, height
-    topRightCorner = (int(image.shape[1] * 0.72), 30)
-    fontScale = 1
-    fontColor = (255, 255, 255)
-    lineType = 2
 
     image = cv2.putText(image, 'People count: {}'.format(people_count),
                         bottomLeftCornerOfText,
@@ -40,15 +34,6 @@ def count_people(image, bboxes, start=None, draw_rectangles=True):
                         fontScale,
                         fontColor,
                         lineType)
-
-    if start is not None:
-        fps = 1. / (time.time() - start)
-        image = cv2.putText(image, 'FPS: {:.2f}'.format(fps),
-                            topRightCorner,
-                            font,
-                            fontScale,
-                            fontColor,
-                            lineType)
 
     if draw_rectangles:
         for bbox in bboxes:
