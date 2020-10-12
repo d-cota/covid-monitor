@@ -17,14 +17,14 @@ ${COVID_MONITOR}
 |-- monitor.py
 |-- utils.py
 ```
-* `bit_pytorch` contains the ResNet Big Transfer implementation for the classifier.
+* `bit_pytorch` contains the ResNet [Big Transfer](https://github.com/google-research/big_transfer) implementation for the classifier.
 * `config` contains configuration files for the models.
 * `detector` contains the code for the object detection algorithm.
 * `inputs` contains video and images to process.
-* `hpe` contains the human pose estimation modules, in particular the SimpleHRNet implementation.
+* `hpe` contains the human pose estimation modules, in particular the [SimpleHRNet](https://github.com/stefanopini/simple-HRNet) implementation.
 * `outputs` contains resulting outputs.
-* `rootnet` contains the RootNet implementation for monitoring the social distancing
-* `tracking` contains the code for the tracking algorithm, in particular the DeepSort implementation
+* `rootnet` contains the [RootNet](https://github.com/mks0601/3DMPPE_ROOTNET_RELEASE) implementation for monitoring the social distancing
+* `tracking` contains the code for the tracking algorithm, in particular the [DeepSort](https://github.com/kimyoon-young/centerNet-deep-sort) implementation
 * `weigths` contains the model checkpoints to be loaded.
 * `monitor.py` is the main script for monitoring the prevention measures.
 * `utils.py` contains some utilities functions.
@@ -158,3 +158,11 @@ Download the following files and put them in the weights directory.
 * [Pretrained RootNet](https://drive.google.com/drive/folders/1nQfOIgc7_AG5xPAO-vtG_L0WxdOelxet?usp=sharing). Search for the Human3.6M+MPII folder, then take the snapshot_19.pth.tar file.
 * [Pretrained PoseHRNet](https://drive.google.com/drive/folders/1nzM_OBV9LbAEA7HClC0chEyf_7ECDXYA). Download the pose_hrnet_w48_384x288.pth file.
 * [Fine-tuned BiT-R101x1](https://drive.google.com/file/d/1V68SZVL_HLDoA278ZYZa2MBFE_fF-ZaO/view?usp=sharing)
+
+## References
+This work is based on the following repositories:
+* pytorch-YOLOv4 https://github.com/Tianxiaomo/pytorch-YOLOv4
+* centerNet-deep-sort https://github.com/kimyoon-young/centerNet-deep-sort
+* simple-HRNet https://github.com/stefanopini/simple-HRNet
+* 3DMPPE_ROOTNET_RELEASE https://github.com/mks0601/3DMPPE_ROOTNET_RELEASE
+* big_transfer https://github.com/google-research/big_transfer
