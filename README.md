@@ -1,7 +1,9 @@
 # Monitoring COVID-19 prevention measures on CCTV cameras using Deep Learning
 This repo contains the code for the thesis *"Monitoring COVID-19 prevention measures on CCTV cameras using Deep Learning"*. The whole system is implemented in PyTorch and has been tested on Windows 10.
 
-![sample frame](https://github.com/d-cota/covid-monitor/blob/master/example.gif)
+<p align="center">
+  <img width="600" height="400" src="https://github.com/d-cota/covid-monitor/blob/master/example.gif">
+</p>
 
 ## Project structure
 The `${COVID_MONITOR}` is described as below.
