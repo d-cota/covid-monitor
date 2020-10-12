@@ -1,5 +1,8 @@
 # Monitoring COVID-19 prevention measures on CCTV cameras using Deep Learning
 This repo contains the code for the thesis *"Monitoring COVID-19 prevention measures on CCTV cameras using Deep Learning"*. The whole system is implemented in PyTorch and has been tested on Windows 10.
+
+![sample frame](https://github.com/d-cota/covid-monitor/blob/master/example.gif)
+
 ## Project structure
 The `${COVID_MONITOR}` is described as below.
 ```
@@ -157,7 +160,7 @@ Download the following files and put them in the weights directory.
 * [DeepSort tracking checkpoints](https://github.com/kimyoon-young/centerNet-deep-sort/tree/master/deep/checkpoint)
 * [Pretrained RootNet](https://drive.google.com/drive/folders/1nQfOIgc7_AG5xPAO-vtG_L0WxdOelxet?usp=sharing). Search for the Human3.6M+MPII folder, then take the snapshot_19.pth.tar file.
 * [Pretrained PoseHRNet](https://drive.google.com/drive/folders/1nzM_OBV9LbAEA7HClC0chEyf_7ECDXYA). Download the pose_hrnet_w48_384x288.pth file.
-* [Fine-tuned BiT-R101x1](https://drive.google.com/file/d/1V68SZVL_HLDoA278ZYZa2MBFE_fF-ZaO/view?usp=sharing)
+* [Fine-tuned BiT-R101x1](https://drive.google.com/file/d/16G_sTX1WxM3Tw9u1uiYxYA6LpTvNKS0k/view?usp=sharing)
 
 ## References
 This work is based on the following repositories:
