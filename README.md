@@ -1,3 +1,9 @@
+![madeby](https://img.shields.io/badge/made%20by-d--cota-blue)
+![GitHub top language](https://img.shields.io/github/languages/top/d-cota/covid-monitor)
+![GitHub Repo stars](https://img.shields.io/github/stars/d-cota/covid-monitor?color=yellow)
+![GitHub issues](https://img.shields.io/github/issues/d-cota/covid-monitor)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/d-cota/covid-monitor)
+
 # Monitoring COVID-19 prevention measures on CCTV cameras using Deep Learning
 This repo contains the code for the thesis *"Monitoring COVID-19 prevention measures on CCTV cameras using Deep Learning"*. The whole system is implemented in PyTorch and has been tested on Windows 10.
 
