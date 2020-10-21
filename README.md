@@ -5,7 +5,7 @@
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/d-cota/covid-monitor)
 
 # Monitoring COVID-19 prevention measures on CCTV cameras using Deep Learning
-This repo contains the code for the thesis *"Monitoring COVID-19 prevention measures on CCTV cameras using Deep Learning"*. The whole system is implemented in PyTorch and has been tested on Windows 10.
+This repo contains the code for the thesis [*"Monitoring COVID-19 prevention measures on CCTV cameras using Deep Learning"*](https://www.researchgate.net/publication/344785970_Monitoring_COVID-19_prevention_measures_on_CCTV_cameras_using_Deep_Learning). The whole system is implemented in PyTorch and has been tested on Windows 10. Technical slide can be found [here](https://github.com/d-cota/covid-monitor/blob/master/technical%20slides.pdf).
 
 <p align="center">
   <img width="600" height="400" src="https://github.com/d-cota/covid-monitor/blob/master/example.gif">
@@ -169,6 +169,12 @@ Download the following files and put them in the weights directory.
 * [Pretrained RootNet](https://drive.google.com/drive/folders/1nQfOIgc7_AG5xPAO-vtG_L0WxdOelxet?usp=sharing). Search for the Human3.6M+MPII folder, then take the snapshot_19.pth.tar file.
 * [Pretrained PoseHRNet](https://drive.google.com/drive/folders/1nzM_OBV9LbAEA7HClC0chEyf_7ECDXYA). Download the pose_hrnet_w48_384x288.pth file.
 * [Fine-tuned BiT-R101x1](https://drive.google.com/file/d/16G_sTX1WxM3Tw9u1uiYxYA6LpTvNKS0k/view?usp=sharing)
+
+## Citation
+If you liked this work please put a star and cite me :sunglasses:
+```
+DOI: 10.13140/RG.2.2.16368.69124
+```
 
 ## References
 This work is based on the following repositories:
